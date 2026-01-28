@@ -3,6 +3,7 @@ package main.java.com.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserService {
@@ -10,7 +11,7 @@ public class UserService {
     private String password = "secret";
     
     // Fixed: Using try-with-resources to automatically close resources
-    public void findUser(String username) throws Exception {
+    public void findUser(String username) throws SQLException {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost/db", "root", password);
              Statement st = conn.createStatement();
@@ -26,7 +27,7 @@ public class UserService {
     }
     
     // Fixed: Using try-with-resources to automatically close resources
-    public void deleteUser(String username) throws Exception {
+    public void deleteUser(String username) throws SQLException {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost/db", "root", password);
              Statement st = conn.createStatement()) {
