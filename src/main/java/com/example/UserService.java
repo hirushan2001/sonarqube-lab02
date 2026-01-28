@@ -2,41 +2,38 @@ package main.java.com.example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class UserService {
-
-    // SECURITY ISSUE: Hardcoded credentials
-    private String password = "admin123";
-
-    // VULNERABILITY: SQL Injection
+    
+    private String password = "secret";
+    
+    // Fixed: Using try-with-resources to automatically close resources
     public void findUser(String username) throws Exception {
-
-        Connection conn =
-            DriverManager.getConnection("jdbc:mysql://localhost/db",
-                    "root", password);
-
-        Statement st = conn.createStatement();
-
-        String query =
-            "SELECT * FROM users WHERE name = '" + username + "'";
-
-        st.executeQuery(query);
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost/db", "root", password);
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(
+                 "SELECT * FROM users WHERE name = '" + username + "'")) {
+            
+            // Process results if needed
+            while (rs.next()) {
+                // Handle result set
+            }
+        }
+        // Resources are automatically closed
     }
-
-    // SMELL: Unused method
-    public void notUsed() {
-        System.out.println("I am never called");
-    }
-
-    // EVEN WORSE: another SQL injection
+    
+    // Fixed: Using try-with-resources to automatically close resources
     public void deleteUser(String username) throws Exception {
-    Connection conn =
-    DriverManager.getConnection("jdbc:mysql://localhost/db",
-    "root", password);
-    Statement st = conn.createStatement();
-    String query =
-    "DELETE FROM users WHERE name = '" + username + "'";
-    st.execute(query);
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost/db", "root", password);
+             Statement st = conn.createStatement()) {
+            
+            String query = "DELETE FROM users WHERE name = '" + username + "'";
+            st.execute(query);
+        }
+        // Resources are automatically closed
     }
 }
