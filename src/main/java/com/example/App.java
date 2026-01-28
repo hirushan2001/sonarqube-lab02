@@ -4,8 +4,8 @@ public class App {
     
     public static void main(String[] args) throws Exception {
         Calculator calc = new Calculator();
-        // Removed System.out.println - replaced with proper logging or removed entirely
-        int result = calc.calculate(10, 5, "add");
+        // Simply call calculate without storing unused result
+        calc.calculate(10, 5, "add");
         
         UserService service = new UserService();
         service.findUser("admin");
